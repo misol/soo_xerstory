@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="soo_what_did_the_person_write">
+		<value xml:lang="ko"><![CDATA[글쓴이가 작성한 다른 게시물]]></value>
+		<value xml:lang="en"><![CDATA[What did the author wrote]]></value>
+	</item>
+	<item name="soo_hot">
+		<value xml:lang="ko"><![CDATA[인기]]></value>
+		<value xml:lang="en"><![CDATA[Hot]]></value>
+	</item>
+	<item name="soo_new">
+		<value xml:lang="ko"><![CDATA[최근]]></value>
+		<value xml:lang="en"><![CDATA[New]]></value>
+	</item>
+</lang>

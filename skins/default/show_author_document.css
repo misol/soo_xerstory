@@ -1,0 +1,21 @@
+.show_author_document{margin:10px 5px;overflow:hidden;background:#fff;font-size:13px;line-height:1.4;}
+.show_author_document a{text-decoration:none;color:#333}
+.show_author_document a:hover,
+.show_author_document a:active,
+.show_author_document a:focus{text-decoration:none;}
+.show_author_document img[title="file"]{display:none;}
+
+.show_author_document h2{margin:0;padding:5px 10px;font-size:13px;background:#506FB0;color:#fff;font-weight:normal;}
+.show_author_document ul{margin:0;padding:10px 8px 8px 8px;list-style:none;border:1px solid #ddd;border-top:0;}
+.show_author_document ul li a{display:block;height:23px;}
+.show_author_document ul li a .part{float:right;}
+.show_author_document ul li a .part .hour{color:#333;}
+.show_author_document ul li a .part .date{color:#888;}
+.show_author_document ul li a .title {display:inline-block;width:70%;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;vertical-align:middle;}
+.show_author_document ul li a:hover .title,
+.show_author_document ul li a:active .title,
+.show_author_document ul li a:focus .title{text-decoration:underline;color:#15c;}
+
+.show_author_document ul li a .mark{display:inline-block;margin-right:2px;padding:1px 6px;font-size:12px;background:#000;color:#fff;border-radius:10px;}
+.show_author_document ul li a .mark.newest{background:#3A8E52;}
+.show_author_document ul li a .mark.popular{background:#F24452;}

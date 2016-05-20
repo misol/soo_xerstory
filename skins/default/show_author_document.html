@@ -1,0 +1,31 @@
+<load target="../../lang" />
+<load target="show_author_document.css" />
+<load target="../../../common/xeicon/xeicon.min.css" />
+
+<div class="show_author_document">
+	<h2><i class="xi-book-spread"></i> {$lang->soo_what_did_the_person_write}</h2>
+	<ul>
+		{@ $i=1}
+		<li loop="$document_list => $key, $document" cond="$i < $widget_info->list_count">
+			<a href="{$document->getPermanentUrl()}" title="{htmlspecialchars($document->getTitle())}">
+				<!--@if($document->popular == Y)-->
+					<span class="mark popular">{$lang->soo_hot}</span>
+				<!--@else-->
+					<span class="mark newest">{$lang->soo_new}</span>
+				<!--@end-->
+				
+				<span class="title">
+					{$document->printExtraImages()} {$document->getTitle()}
+				</span>
+				<span class="part">
+					<!--@if($document->getRegdate('Y-m-d') == zdate(date('YmdHis'), 'Y-m-d'))-->
+						<span class="hour">{$document->getRegdate("H:i")}</span>
+					<!--@else-->
+						<span class="date">{$document->getRegdate("m.d")}</span>
+					<!--@end-->
+				</span>
+			</a>
+			{@ $i++}
+		</li>
+	</ul>
+</div>

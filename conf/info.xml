@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget version="0.2">
+	<title xml:lang="ko">글쓴이 게시물 출력 위젯</title>
+	<title xml:lang="en">What Did The Person Write widget</title>
+	<description xml:lang="ko">글쓴이가 작성한 게시물을 게시글 하단에 출력해주는 위젯입니다. CONORY 님의 글쓴이 게시물 출력 애드온을 개작하여 위젯으로 만들었습니다.</description>
+	<description xml:lang="en">This widget displays what the person wrote.</description>
+	<version>0.1</version>
+	<license>GPLv2</license>
+	<date>2016-05-20</date>
+	<author email_address="misol.kr@gmail.com" link="https://github.com/misol">
+		<name xml:lang="ko">김민수</name>
+		<name xml:lang="en">Min-Soo Kim</name>
+	</author>
+	<extra_vars>
+		<var name="list_type" type="select">
+			<type>select</type>
+			<title xml:lang="ko">목록 구성</title>
+			<title xml:lang="en">List configuration</title>
+			<description xml:lang="ko">글쓴이 게시물을 어떤 구성으로 출력할지 선택해주세요.</description>
+			<description xml:lang="en">Which items should be displayed.</description>
+			<options value="">
+				<value></value>
+				<name xml:lang="ko">인기글 + 최신글</name>
+				<name xml:lang="en">Fancy articles + new articles</name>
+			</options>
+			<options value="popular">
+				<value>popular</value>
+				<name xml:lang="ko">인기글</name>
+				<name xml:lang="en">Fancy articles</name>
+			</options>
+			<options value="newest">
+				<value>newest</value>
+				<name xml:lang="ko">최신글</name>
+				<name xml:lang="en">New articles</name>
+			</options>
+		</var>
+		<var name="list_count" type="text">
+			<title xml:lang="ko">목록 수</title>
+			<title xml:lang="en">The number of items</title>
+			<description xml:lang="ko">출력할 글쓴이 게시물 수를 입력해주세요. 기본값 : 7</description>
+			<description xml:lang="en">How many items to display. Default value: 7</description>
+		</var>
+		<var name="each_module" type="select">
+			<type>select</type>
+			<title xml:lang="ko">개별 게시판 출력</title>
+			<title xml:lang="en">Display each board respectively</title>
+			<description xml:lang="ko">해당 게시판에서 쓴 게시물만 출력합니다.</description>
+			<description xml:lang="en">Do not display the articles of the other boards.</description>
+			<options value="">
+				<value></value>
+				<name xml:lang="ko">사용안함</name>
+				<name xml:lang="en">Deactivate this function</name>
+			</options>
+			<options value="Y">
+				<value>Y</value>
+				<name xml:lang="ko">사용함</name>
+				<name xml:lang="en">Activate this function</name>
+			</options>
+		</var>
+		<var name="except_module" type="text">
+			<title xml:lang="ko">게시판 제외</title>
+			<title xml:lang="en">Excluding boards</title>
+			<description xml:lang="ko">개별을 사용하지않을 경우 특정 게시판의 글을 제외시킬 수 있습니다. module_srl로 입력해주세요. 다수일 경우 ,(콤마)로 구분합니다.</description>
+			<description xml:lang="en">Extract articles from other modules except this modules. Enter module_srls with comma (,) to separate each module_srl.</description>
+		</var>
+		<var name="popular_count" type="text">
+			<title xml:lang="ko">인기글 수</title>
+			<title xml:lang="en">The number of maximum fancy articles</title>
+			<description xml:lang="ko">목록 구성에 인기글이 포함되어 있을 경우 출력할 인기글 수를 입력해주세요. 기본값 : 2</description>
+			<description xml:lang="en">default value: 2</description>
+		</var>
+		<var name="popular_sort" type="select">
+			<type>select</type>
+			<title xml:lang="ko">인기글 정렬</title>
+			<title xml:lang="en">Fancy sorting</title>
+			<description xml:lang="ko">인기글 정렬 기준을 선택해주세요.</description>
+			<description xml:lang="en">Sorting criteria to determine the fancy articles.</description>
+			<options value="">
+				<value></value>
+				<name xml:lang="ko">등록일순</name>
+				<name xml:lang="en">Registered date</name>
+			</options>
+			<options value="voted_count">
+				<value>voted_count</value>
+				<name xml:lang="ko">추천순</name>
+				<name xml:lang="en">Recommandation</name>
+			</options>
+			<options value="readed_count">
+				<value>readed_count</value>
+				<name xml:lang="ko">조회순</name>
+				<name xml:lang="en">View count</name>
+			</options>
+		</var>
+		<var name="popular_vote" type="text">
+			<title xml:lang="ko">인기글 추천수</title>
+			<title xml:lang="en">The number of recommandation to be a fancy article</title>
+			<description xml:lang="ko">목록 구성에 인기글이 포함되어 있을 경우 인기글의 기준이 될 추천수를 입력해주세요. 지정한 값이상이면 인기글이 됩니다.</description>
+			<description xml:lang="en">The number of recommandation to be a fancy article. Recommandation over this number will make an article as a fancy article.</description>
+		</var>
+		<var name="popular_readed" type="text">
+			<title xml:lang="ko">인기글 조회수</title>
+			<title xml:lang="en">The number of view to be a fancy article</title>
+			<description xml:lang="ko">목록 구성에 인기글이 포함되어 있을 경우 인기글의 기준이 될 조회수를 입력해주세요. 지정한 값이상이면 인기글이 됩니다.</description>
+			<description xml:lang="en">The view count to be a fancy article. View count over this number will make an article as a fancy article.</description>
+		</var>
+		<var name="popular_base" type="select">
+			<type>select</type>
+			<title xml:lang="ko">인기글 처리방법</title>
+			<title xml:lang="en">Fancy article logics</title>
+			<description xml:lang="ko">위에서 입력한 추천수와 조회수로 어떻게 해서 인기글로 만들지 선택해주세요.</description>
+			<description xml:lang="en">The logic to determine the fancy articles. How to calculate the numbers above, you wrote.</description>
+			<options value="">
+				<value></value>
+				<name xml:lang="ko">추천수와 조회수 둘중 하나만 이상이 되어도 인기글이 됩니다.(OR)</name>
+				<name xml:lang="en">If an article satisfy more than one criteria, recommandation or view count, it will be a fancy article. (OR)</name>
+			</options>
+			<options value="and">
+				<value>and</value>
+				<name xml:lang="ko">추천수와 조회수 둘다 이상이 되어야만 인기글이 됩니다.(AND)</name>
+				<name xml:lang="en">To be a fancy article, the article should satisfy both criteria, recommandation and view count. (AND)</name>
+			</options>
+		</var>
+		<var name="popular_time" type="text">
+			<title xml:lang="ko">인기글 지속시간</title>
+			<title xml:lang="en">Fancy duration</title>
+			<description xml:lang="ko">지속시간이 지난 인기글은 더 이상 표시되지않습니다. 0이면 무제한, 단위 : 일(24시간)</description>
+			<description xml:lang="en">A fancy article, after this duration, will not be displayed as a fancy article. 0 will mean infinity duration. Unit: day (24 hours)</description>
+		</var>
+	</extra_vars>
+</widget>

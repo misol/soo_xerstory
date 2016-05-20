@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+	<title xml:lang="ko">기본 스킨</title>
+	<title xml:lang="en">Default skin</title>
+	<description xml:lang="ko">코노리님 애드온과 동일한 스타일의 스킨 입니다.</description>
+	<version>0.1</version>
+	<date>2016-05-21</date>
+	<link>https://github.com/misol</link>
+
+	<author email_address="misol.kr@gmail.com" link="https://github.com/misol">
+		<name xml:lang="ko">김민수</name>
+		<name xml:lang="en">Min-Soo Kim</name>
+	</author>
+</skin>

@@ -1,0 +1,28 @@
+<query id="getDocumentList" action="select">
+	<tables>
+		<table name="documents" />
+	</tables>
+	<columns>
+		<column name="*" />
+	</columns>
+	<conditions>
+		<condition operation="equal" column="member_srl" var="member_srl" filter="number" notnull="notnull" />
+		<condition operation="equal" column="module_srl" var="module_srl" filter="number" pipe="and" />
+		<condition operation="notin" column="module_srl" var="no_module_srl" filter="number" pipe="and" />
+		<condition operation="notin" column="document_srl" var="no_document_srl" filter="number" pipe="and" />
+		<condition operation="more" column="regdate" var="regdate" filter="number" pipe="and" />
+		<condition operation="in" column="status" var="statusList" pipe="and" />
+		<group pipe="and">
+			<condition operation="more" column="readed_count" var="readed_count" pipe="and" />
+			<condition operation="more" column="voted_count" var="voted_count" pipe="and" />
+		</group>
+		<group pipe="and">
+			<condition operation="more" column="readed_count" var="readed_count_or" pipe="or" />
+			<condition operation="more" column="voted_count" var="voted_count_or" pipe="or" />
+		</group>
+	</conditions>
+	<navigation>
+		<index var="sort_index" default="regdate" order="desc" />
+		<list_count var="list_count" default="7" />
+	</navigation>
+</query>
