@@ -7,26 +7,56 @@ class soo_xerstory extends WidgetHandler
 		$document_srl = Context::get('document_srl');
 		$oDocumentModel = getModel('document');
 		$oDocument = $oDocumentModel->getDocument($document_srl);
-		if(!$oDocument->get('member_srl')) return;
+		if(!$oDocument->get('member_srl')) return ' ';
 
 		if(!$widget_info->popular_count) $widget_info->popular_count = 2;
 		if(!$widget_info->list_count) $widget_info->list_count = 7;
 		$widget_info->list_count++;
+
+		// 위젯은 글 저장을 캐치할 수 없음. 시간에 따른 캐시.
+		if(!$widget_info->soo_cache_duration)
+		{
+			$widget_info->soo_cache_duration = '10s';
+		}
+
+		$soo_cache_duration = $widget_info->soo_cache_duration;
+		if (preg_match('/^([0-9\.]+)([smhd])$/i', $soo_cache_duration, $matches))
+		{
+			// For Rhymix
+			$multipliers = array('s' => 1, 'm' => 60, 'h' => 3600, 'd' => 86400);
+			$soo_cache_duration = intval(floatval($matches[1]) * $multipliers[strtolower($matches[2])]);
+		}
+		else
+		{
+			// For XE
+			$soo_cache_duration = intval(floatval($soo_cache_duration) * 60);
+		}
 
 		//캐시 불러오기
 		$oCacheHandler = CacheHandler::getInstance('object');
 		if($oCacheHandler->isSupport())
 		{
 			$cache_key = 'widget_soo_xerstory:' . $oDocument->get('member_srl');
-			$document_list = $oCacheHandler->get($cache_key);
+			if($oCacheHandler->isValid($cache_key))
+			{
+				$document_list = $oCacheHandler->get($cache_key);
+			}
+
+			// if Cache data is expired, delete data.
+			if($document_list['mtime'] < (time() - $soo_cache_duration))
+			{
+				unset($document_list);
+				$oCacheHandler->delete($cache_key);
+			}
 		}
-		
+
+
 		if(!$document_list)
 		{
 			$no_document_srl = array(1);
 			$popular_list = array();
 			$newest_list = array();
-			
+
 			//인기글
 			if($widget_info->list_type != 'newest' && ($widget_info->popular_vote || $widget_info->popular_readed))
 			{
@@ -41,12 +71,12 @@ class soo_xerstory extends WidgetHandler
 					$args->readed_count_or = $widget_info->popular_readed;
 					$args->voted_count_or = $widget_info->popular_vote;
 				}
-				
+
 				if($widget_info->popular_time)
 				{
 					$args->regdate = date("YmdHis",strtotime(sprintf('-%s day', $widget_info->popular_time)));
 				}
-				
+
 				if($widget_info->list_type == 'popular')
 				{
 					$args->list_count = $widget_info->list_count;
@@ -55,7 +85,7 @@ class soo_xerstory extends WidgetHandler
 				{
 					$args->list_count = $widget_info->popular_count;
 				}
-				
+
 				if($widget_info->each_module == 'Y')
 				{
 					$args->module_srl = $oDocument->get('module_srl');
@@ -64,19 +94,19 @@ class soo_xerstory extends WidgetHandler
 				{
 					$args->no_module_srl = explode(',', $widget_info->except_module);
 				}
-				
+
 				$args->statusList = array('PUBLIC');
 				$args->sort_index = $widget_info->popular_sort;
 				$args->member_srl = $oDocument->get('member_srl');
 				$args->no_document_srl = $no_document_srl;
 				$tmp_output = executeQueryArray('widgets.soo_xerstory.getDocumentList', $args);
-				
+
 				if($tmp_output->data)
 				{
 					foreach($tmp_output->data as $key => $val)
 					{
 						$no_document_srl[] = $val->document_srl;
-						
+
 						$oDocument = new documentItem();
 						$oDocument->setAttribute($val, false);
 						$oDocument->popular = 'Y';
@@ -84,12 +114,12 @@ class soo_xerstory extends WidgetHandler
 					}
 				}
 			}
-			
+
 			//최신글
 			if($widget_info->list_type != 'popular' && $widget_info->list_count > count($popular_list))
 			{
 				$args = new stdClass;
-				
+
 				if($widget_info->each_module == 'Y')
 				{
 					$args->module_srl = $oDocument->get('module_srl');
@@ -98,13 +128,13 @@ class soo_xerstory extends WidgetHandler
 				{
 					$args->no_module_srl = explode(',', $widget_info->except_module);
 				}
-				
+
 				$args->statusList = array('PUBLIC');
 				$args->member_srl = $oDocument->get('member_srl');
 				$args->no_document_srl = $no_document_srl;
 				$args->list_count = $widget_info->list_count - count($popular_list);
 				$tmp_output = executeQueryArray('widgets.soo_xerstory.getDocumentList', $args);
-				
+
 				if($tmp_output->data)
 				{
 					foreach($tmp_output->data as $key => $val)
@@ -115,13 +145,15 @@ class soo_xerstory extends WidgetHandler
 					}
 				}
 			}
-			
+
 			if(!empty($popular_list) || !empty($newest_list))
 			{
 				$merge_list = array_merge($popular_list, $newest_list);
 			}
-			
+
 			$document_list = array();
+			$document_list['mtime'] = time();
+
 			if($merge_list)
 			{
 				foreach($merge_list as $key => $val)
@@ -129,35 +161,36 @@ class soo_xerstory extends WidgetHandler
 					$document_list[$val->document_srl] = $val;
 				}
 			}
-			
+
 			//캐시 저장
 			if($oCacheHandler->isSupport())
 			{
 				// 위젯은 글 저장을 캐치할 수 없음. 시간에 따른 캐시.
-				if(!$widget_info->widget_cache)
+				if(!$widget_info->soo_cache_duration)
 				{
-					$widget_info->widget_cache = '0m';
+					$widget_info->soo_cache_duration = '10s';
 				}
 
-				$widget_cache = $widget_info->widget_cache;
-				if (preg_match('/^([0-9\.]+)([smhd])$/i', $widget_cache, $matches))
+				$soo_cache_duration = $widget_info->soo_cache_duration;
+				if (preg_match('/^([0-9\.]+)([smhd])$/i', $soo_cache_duration, $matches))
 				{
 					// For Rhymix
 					$multipliers = array('s' => 1, 'm' => 60, 'h' => 3600, 'd' => 86400);
-					$widget_cache = intval(floatval($matches[1]) * $multipliers[strtolower($matches[2])]);
+					$soo_cache_duration = intval(floatval($matches[1]) * $multipliers[strtolower($matches[2])]);
 				}
 				else
 				{
 					// For XE
-					$widget_cache = intval(floatval($widget_cache) * 60);
+					$soo_cache_duration = intval(floatval($soo_cache_duration) * 60);
 				}
 
-				$oCacheHandler->put($cache_key, $document_list, $widget_cache);
+				$oCacheHandler->put($cache_key, $document_list, $soo_cache_duration);
 			}
 		}
-		
+
 		unset($document_list[$document_srl]);
-		if(empty($document_list)) return;
+		unset($document_list['mtime']);
+		if(empty($document_list)) return ' ';
 
 		Context::set('widget_info', $widget_info);
 		Context::set('document_list', $document_list);

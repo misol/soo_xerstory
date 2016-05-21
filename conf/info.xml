@@ -4,14 +4,66 @@
 	<title xml:lang="en">What Did The Person Write widget</title>
 	<description xml:lang="ko">글쓴이가 작성한 게시물을 게시글 하단에 출력해주는 위젯입니다. CONORY 님의 글쓴이 게시물 출력 애드온을 개작하여 위젯으로 만들었습니다.</description>
 	<description xml:lang="en">This widget displays what the person wrote.</description>
-	<version>0.1</version>
+	<version>0.2</version>
 	<license>GPLv2</license>
-	<date>2016-05-20</date>
+	<date>2016-05-21</date>
 	<author email_address="misol.kr@gmail.com" link="https://github.com/misol">
 		<name xml:lang="ko">김민수</name>
 		<name xml:lang="en">Min-Soo Kim</name>
 	</author>
 	<extra_vars>
+		<var name="soo_cache_duration" type="select">
+			<type>select</type>
+			<title xml:lang="ko">데이터 캐시 시간</title>
+			<title xml:lang="en">Data expire</title>
+			<description xml:lang="ko">글쓴이 데이터 유지 시간을 선택하세요. 이 항목 위에 나타나는 '캐시' 항목은 설정할 경우 글쓴이와 무관하게 캐시가 되므로 캐시 시간을 설정하지 마시기 바랍니다.</description>
+			<description xml:lang="en">Select data expire duration time. Do not set the cache configuration above this item.</description>
+			<options value="10s">
+				<value>10s</value>
+				<name xml:lang="ko">10초</name>
+				<name xml:lang="en">10 seconds</name>
+			</options>
+			<options value="15s">
+				<value>15s</value>
+				<name xml:lang="ko">15초</name>
+				<name xml:lang="en">15 seconds</name>
+			</options>
+			<options value="30s">
+				<value>30s</value>
+				<name xml:lang="ko">30초</name>
+				<name xml:lang="en">30 seconds</name>
+			</options>
+			<options value="1m">
+				<value>1m</value>
+				<name xml:lang="ko">1분</name>
+				<name xml:lang="en">1 minute</name>
+			</options>
+			<options value="3m">
+				<value>3m</value>
+				<name xml:lang="ko">3분</name>
+				<name xml:lang="en">3 minutes</name>
+			</options>
+			<options value="5m">
+				<value>5m</value>
+				<name xml:lang="ko">5분</name>
+				<name xml:lang="en">5 minutes</name>
+			</options>
+			<options value="10m">
+				<value>10m</value>
+				<name xml:lang="ko">10분</name>
+				<name xml:lang="en">10 minutes</name>
+			</options>
+			<options value="15m">
+				<value>15m</value>
+				<name xml:lang="ko">15분</name>
+				<name xml:lang="en">15 minutes</name>
+			</options>
+			<options value="30m">
+				<value>30m</value>
+				<name xml:lang="ko">30분</name>
+				<name xml:lang="en">30 minutes</name>
+			</options>
+		</var>
 		<var name="list_type" type="select">
 			<type>select</type>
 			<title xml:lang="ko">목록 구성</title>
